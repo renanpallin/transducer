@@ -8,15 +8,14 @@ const {
 	doubleMap,
 } = require('./07-currying_map');
 
-const compose = (...functions) => {
-	return functions.reduce((acc, fn) => {
-		return (...args) => fn(acc(...args), x => x);
-	});
-};
+const { compose } = require('./08-compose_function');
 
 /**
  * Transduce function that works with anthing that implements the
  * Iterable protocol, like Maps, Sets, Strings or your own object.
+ *
+ *	Warning: Will break if you pass a object as collection
+ *	@see 12-imporoving_transduce.js
  *
  * @param  {Transform} xf         [Transformation function]
  * @param  {Reducer} reducer    [The inner reducer of composition]
@@ -42,7 +41,7 @@ var rTransducer = transduce(
 	[],
 	[1, 2, 3, 4]
 );
-console.log('[transduce Array]', rTransducer);
+// console.log('[transduce Array]', rTransducer);
 
 const toUpper = str => str.toUpperCase();
 var rTransducerString = transduce(
@@ -51,7 +50,7 @@ var rTransducerString = transduce(
 	'',
 	'renan'
 );
-console.log('[transduce String]', rTransducerString); // RENAN
+// console.log('[transduce String]', rTransducerString); // RENAN
 
 const isVowel = char => 'aeiou'.split('').includes(char.toLowerCase());
 var rTransducerStringWithFilter = transduce(
@@ -60,7 +59,7 @@ var rTransducerStringWithFilter = transduce(
 	'',
 	'renan'
 );
-console.log('[transduce String with filter]', rTransducerStringWithFilter); // EA
+// console.log('[transduce String with filter]', rTransducerStringWithFilter); // EA
 
 var numMap = new Map();
 numMap.set('a', 1);
@@ -74,4 +73,15 @@ var rTransducerWithMap = transduce(
 	[],
 	numMap.values()
 );
-console.log('[transduce Map]', rTransducerWithMap); // [4,6,8]
+// console.log('[transduce Map]', rTransducerWithMap); // [4,6,8]
+
+
+/*
+Beautiful! But we need to specify the inner reducer (pushReducer, strReducer, maybe an mapReducer) every time. Cold we make a function to figure out that by the
+type we given? Look in the next file.
+ */
+
+
+module.exports = {
+	transduce,
+};

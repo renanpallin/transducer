@@ -9,8 +9,12 @@ const evenOnly = n => n % 2 === 0;
 // wrong composition - functions signs mismatch!
 const doubleAndEven = number => doubleTheNumber(evenOnly(number));
 
+const isPlainObject = something =>
+	typeof something == 'object' && something.constructor == Object;
+
 module.exports = {
 	doubleTheNumber,
 	doubleTwice,
 	evenOnly,
+	isPlainObject,
 };

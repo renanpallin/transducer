@@ -8,11 +8,7 @@ const {
 	doubleMap,
 } = require('./07-currying_map');
 
-const compose = (...functions) => {
-	return functions.reduce((acc, fn) => {
-		return (...args) => fn(acc(...args), x => x);
-	});
-};
+const { compose } = require('./08-compose_function');
 
 const cleanNumbersXf = compose(isNot2Filter, isEvenFilter, doubleMap)(
 	pushReducer
@@ -24,7 +20,8 @@ console.log('Our compose function', rWithOurComposeFunction);
 Let's create a function to do everithing we're doing above:
  */
 /**
- * Transduce function
+ * Transduce function working only with objects that have a
+ * reducer function (arrays)
  * @param  {Transform} xf         [Transformation function]
  * @param  {Reducer} reducer    [The inner reducer of composition]
  * @param  {any} seed       [Initial seed]
